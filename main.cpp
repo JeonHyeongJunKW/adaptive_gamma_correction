@@ -21,20 +21,19 @@ int main(int argc, char* argv[]) {
   cap.set(cv::CAP_PROP_FRAME_WIDTH, 320);
   cap.set(cv::CAP_PROP_FPS, 30);
 
-	std::shared_ptr<jhj::visible::filter::color::GammaCorrector> color_corrector =
-	  std::make_shared<jhj::visible::filter::color::GammaCorrector>(cv::Size2i(320, 240));
-		std::shared_ptr<jhj::visible::filter::color::GammaCorrector> gray_corrector =
-	  std::make_shared<jhj::visible::filter::color::GammaCorrector>(cv::Size2i(320, 240));
+	std::shared_ptr<jhj::visible::filter::color::GammaCorrector> corrector =
+	  std::make_shared<jhj::visible::filter::color::GammaCorrector>(stream, cv::Size2i(320, 240));
+
   cv::Mat input_image;
 
 	while (true) {
 		cap >> input_image;
 		cv::imshow("camera input image", input_image);
-		cv::Mat color_output_image = color_corrector->apply_filter(input_image);
+		cv::Mat color_output_image = corrector->apply_filter(stream, input_image);
 		cv::imshow("color output image", color_output_image);
 		cv::Mat gray_image;
 		cv::cvtColor(input_image, gray_image, cv::COLOR_BGR2GRAY);
-		cv::Mat gray_output_image = gray_corrector->apply_filter(gray_image);
+		cv::Mat gray_output_image = corrector->apply_filter(stream, gray_image);
 		cv::imshow("gray output image", gray_output_image);
 		if (cv::waitKey(1) == 27)
 			break;
