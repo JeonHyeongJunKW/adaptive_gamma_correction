@@ -1,0 +1,2 @@
+# adaptive_gamma_correction
+adaptive gamma correction implementation
