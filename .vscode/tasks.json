@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "build for debug",
+			"command": "nvcc",
+			"args": [
+				"`pkg-config",
+				"opencv4",
+				"--libs",
+				"--cflags",
+				"opencv4`",
+				"-diag-suppress",
+				"611",
+				"-I",
+				"${workspaceFolder}/include/",
+				"-o", // 실행파일 생성을 위해서 필요함.
+				"correction.out", // 실행파일 이름
+				"${workspaceFolder}/main.cpp",
+				"${workspaceFolder}/src/image_processing/filter/color/*"], // 소스파일 위치
+			"problemMatcher": ["$nvcc"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
