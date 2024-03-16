@@ -63,13 +63,6 @@ cv::Mat filter::color::GammaCorrector::correct_gray_gamma(cudaStream_t stream, c
 void filter::color::GammaCorrector::apply_adaptive_gamma_correct(
   cudaStream_t stream, cv::Mat & value_image)
 {
-  // {
-  //   auto start = std::chrono::high_resolution_clock::now();
-  //   auto end = std::chrono::high_resolution_clock::now();
-  //   double out_time = static_cast<double>(
-  //     std::chrono::duration_cast<std::chrono::nanoseconds>(
-  //       end - start).count()) / 1e6;
-  // }
 
   // value_image : 0.0f ~ 1.0f
   cv::Scalar mean, standard_deviation;
@@ -85,6 +78,30 @@ void filter::color::GammaCorrector::apply_adaptive_gamma_correct(
 
   const bool is_bright_image = mean(0) > 0.5f;
 
+  cudaMemcpyAsync(
+    intensity_data_,
+    value_image.data,
+    image_size_.area() * sizeof(float),
+    cudaMemcpyHostToDevice,
+    stream);
+
+  host::apply_adaptive_gamma_correction(
+    intensity_data_,
+    gamma,
+    mean(0),
+    is_bright_image,
+    image_size_.height,
+    image_size_.width,
+    stream);
+
+  cudaMemcpyAsync(
+    value_image.data,
+    intensity_data_,
+    image_size_.area() * sizeof(float),
+    cudaMemcpyDeviceToHost,
+    stream);
+
+  cudaStreamSynchronize(stream);
 }
 } // namespace visible
 } // namespace jhj

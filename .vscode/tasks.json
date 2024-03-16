@@ -18,7 +18,8 @@
 				"-o", // 실행파일 생성을 위해서 필요함.
 				"correction.out", // 실행파일 이름
 				"${workspaceFolder}/main.cpp",
-				"${workspaceFolder}/src/image_processing/filter/color/*"], // 소스파일 위치
+				"${workspaceFolder}/src/image_processing/filter/color/*",
+				"${workspaceFolder}/src/cuda/host/*"], // 소스파일 위치
 			"problemMatcher": ["$nvcc"],
 			"group": {
 				"kind": "build",

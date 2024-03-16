@@ -1,14 +1,13 @@
 #ifndef IMAGE_PROCESSING__FILTER__COLOR__GAMMA_CORRECTOR_HPP_
 #define IMAGE_PROCESSING__FILTER__COLOR__GAMMA_CORRECTOR_HPP_
 
-#include <iostream>
-#include <string>
 #include <vector>
 #include <cmath>
 
 #include <cuda_runtime.h>
-
 #include <opencv2/opencv.hpp>
+
+#include "cuda/host/image_processing.cuh"
 
 namespace jhj
 {
