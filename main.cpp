@@ -20,15 +20,11 @@ int main(int argc, char* argv[]) {
 		cv::imshow("input image", input_image);
 		cv::Mat output_image = input_image.clone();
 		float mean, standard_deviation;
-		auto start = std::chrono::high_resolution_clock::now();
+
 		corrector->analyze_color_image(input_image, mean, standard_deviation);
 		corrector->apply_filter(stream, output_image, input_image, mean, standard_deviation);
 		cudaStreamSynchronize(stream);
-		auto end = std::chrono::high_resolution_clock::now();
-		double out_time = static_cast<double>(
-			std::chrono::duration_cast<std::chrono::nanoseconds>(
-				end - start).count()) / 1e6;
-		std::cout << "process time : " << out_time << "ms" << std::endl;
+
 		cv::imshow("color output image", output_image);
 		if (cv::waitKey(1) == 27)
 			break;
